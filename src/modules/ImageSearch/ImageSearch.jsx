@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
-
+import Button from './Button/Button';
 import { searchImage } from '../../shared/components/Modal/services/img-serch-api';
 
 class ImageSearch extends Component {
@@ -23,7 +23,7 @@ class ImageSearch extends Component {
     try {
       this.setState({ loading: true });
       const { search, page } = this.state;
-      const { hits } = await searchImage(search, page);
+      const hits = await searchImage(search, page);
       this.setState(({ items }) => ({ items: [...items, ...hits] }));
     } catch (error) {
       this.setState({ error: error.message });
@@ -34,15 +34,20 @@ class ImageSearch extends Component {
   searchImage = ({ search }) => {
     this.setState({ search, items: [], page: 1 });
   };
+  onLoadMore = () => {
+    this.setState(({ page }) => ({ page: page + 1 }));
+  };
   render() {
     const { items, loading, error } = this.state;
-    const { searchImage } = this;
+    const { searchImage, onLoadMore } = this;
     return (
       <>
         <Searchbar onSubmit={searchImage} />
         <ImageGallery items={items} />
         {error && <p>{error}</p>}
         {loading && <p>Loading ...</p>}
+        {/* якщо є картинки - показуємо кнопку */}
+        {Boolean(items.length) && <Button onLoadMore={onLoadMore} />}
       </>
     );
   }

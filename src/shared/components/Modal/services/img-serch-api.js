@@ -8,8 +8,10 @@ const instance = axios.create({
   },
 });
 
-export const searchImage = async q => {
-  const { hits } = await instance.get('/', {
+export const searchImage = async (q, _page = 1) => {
+  const {
+    data: { hits },
+  } = await instance.get('/', {
     params: {
       per_page: 12,
       q,
