@@ -1,11 +1,23 @@
-import ImageGalleryItem from './ImageSearch/ImageGalleryItem/ImageGalleryItem';
-import css from './ImageSearch/ImageGallery.module.css';
-const ImageGallery = () => {
+import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
+import css from '../ImageGallery/ImageGallery.module.css';
+const ImageGallery = ({ items }) => {
   return (
-    <ul class={css.imageGallery}>
-      <ImageGalleryItem />
+    <ul className={css.imageGallery}>
+      {items.map(({ id, webformatURL, largeImageURL }) => {
+        return (
+          <ImageGalleryItem
+            key={id}
+            id={id}
+            src={webformatURL}
+            bigImage={largeImageURL}
+          />
+        );
+      })}
     </ul>
   );
 };
 
 export default ImageGallery;
+ImageGallery.defaultProps = {
+  items: [],
+};

@@ -1,8 +1,8 @@
-import css from './ImageSearch/ImageGalleryItem.module.css';
-const ImageGalleryItem = () => {
+import css from '../ImageGalleryItem/ImageGalleryItem.module.css';
+const ImageGalleryItem = ({ id, src, bigImage }) => {
   return (
-    <li class={css.imageGalleryItem}>
-      <img className={css.imageGalleryItemImage} src="" alt="" />
+    <li class={css.imageGalleryItem} id={id}>
+      <img className={css.imageGalleryItemImage} src={src} alt={bigImage} />
     </li>
   );
 };
