@@ -4,7 +4,7 @@ const ImageGalleryItem = ({ id, src, showImage, largeImageUrl, tags }) => {
     <li
       className={css.imageGalleryItem}
       key={id}
-      onClick={() => showImage({ tags, largeImageUrl })}
+      onClick={() => showImage({ largeImageUrl, tags })}
     >
       <img className={css.imageGalleryItemImage} src={src} alt={tags} />
     </li>

@@ -1,3 +1,4 @@
+import { BsSearch } from 'react-icons/bs';
 import { Component } from 'react';
 import css from './Searchbar.module.css';
 import PropTypes from 'prop-types';
@@ -27,6 +28,7 @@ class Searchbar extends Component {
       <header className={css.searchbar}>
         <form className={css.searchForm} onSubmit={handleSubmit}>
           <button type="submit" className={css.searchFormButton}>
+            <BsSearch />
             <span className={css.searchFormButtonLabel}>Search</span>
           </button>
           <input
