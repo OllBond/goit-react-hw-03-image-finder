@@ -3,6 +3,8 @@ import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
 import Modal from '../../shared/components/Modal/Modal';
+import LargeImage from './LargeImage/LargeImage';
+import Loader from './Loader/Loader';
 import { searchImage } from '../../shared/components/Modal/services/img-serch-api';
 
 class ImageSearch extends Component {
@@ -12,6 +14,8 @@ class ImageSearch extends Component {
     page: 1,
     loading: false,
     error: null,
+    imageDetails: null,
+    showModal: false,
   };
   componentDidUpdate(prevProps, prevState) {
     const { search, page } = this.state;
@@ -44,20 +48,39 @@ class ImageSearch extends Component {
     // передаємо call-back, бо змінюється state
     this.setState(({ page }) => ({ page: page + 1 }));
   };
+  showImage = ({ tags, largeImageUrl }) => {
+    this.setState({
+      imageDetails: {
+        tags,
+        largeImageUrl,
+      },
+      showModal: true,
+    });
+  };
+
+  closeModal = () => {
+    this.setState({
+      showModal: false,
+      imageDetails: null,
+    });
+  };
+
   render() {
-    const { items, loading, error } = this.state;
-    const { searchImage, onLoadMore } = this;
+    const { items, loading, error, showModal, imageDetails } = this.state;
+    const { searchImage, onLoadMore, showImage, closeModal } = this;
     return (
       <>
         <Searchbar onSubmit={searchImage} />
-        <ImageGallery items={items} />
+        <ImageGallery items={items} showImage={showImage} />
         {error && <p>{error}</p>}
-        {loading && <p>Loading ...</p>}
+        {loading && <Loader />}
         {/* якщо є картинки - показуємо кнопку */}
         {Boolean(items.length) && <Button onLoadMore={onLoadMore} />}
-        <Modal>
-          <div></div>
-        </Modal>
+        {showModal && (
+          <Modal close={closeModal}>
+            <LargeImage {...imageDetails} />
+          </Modal>
+        )}
       </>
     );
   }

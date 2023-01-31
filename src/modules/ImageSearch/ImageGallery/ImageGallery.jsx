@@ -1,15 +1,17 @@
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import css from '../ImageGallery/ImageGallery.module.css';
-const ImageGallery = ({ items }) => {
+const ImageGallery = ({ items, showImage }) => {
   return (
     <ul className={css.imageGallery}>
-      {items.map(({ id, webformatURL, largeImageURL }) => {
+      {items.map(({ id, webformatURL, largeImageUrl, tags }) => {
         return (
           <ImageGalleryItem
             key={id}
             id={id}
+            tags={tags}
             src={webformatURL}
-            bigImage={largeImageURL}
+            largeImageURL={largeImageUrl}
+            showImage={showImage}
           />
         );
       })}
