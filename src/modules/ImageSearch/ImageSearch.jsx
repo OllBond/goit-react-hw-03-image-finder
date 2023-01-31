@@ -3,6 +3,7 @@ import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
 import Modal from '../../shared/components/Modal/Modal';
+import ImageDetails from './ImageDetails/ImageDetails';
 import Loader from './Loader/Loader';
 import { searchImage } from '../../shared/components/Modal/services/img-serch-api';
 
@@ -47,9 +48,9 @@ class ImageSearch extends Component {
     // передаємо call-back, бо змінюється state
     this.setState(({ page }) => ({ page: page + 1 }));
   };
-  showImage = ({ largeImageUrl, tags }) => {
+  showImage = ({ largeImageURL, tags }) => {
     this.setState({
-      imageDetails: { largeImageUrl, tags },
+      imageDetails: { largeImageURL, tags },
       showModal: true,
     });
   };
@@ -75,7 +76,7 @@ class ImageSearch extends Component {
         {isImages && <Button onLoadMore={onLoadMore} />}
         {showModal && (
           <Modal close={closeModal}>
-            <img src={imageDetails.largeImageURL} alt={imageDetails.tags} />
+            <ImageDetails {...imageDetails} />
           </Modal>
         )}
       </div>
