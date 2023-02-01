@@ -73,7 +73,7 @@ class ImageSearch extends Component {
         {error && <p>{error}</p>}
         {loading && <Loader />}
         {/* якщо є картинки - показуємо кнопку */}
-        {isImages && <Button onLoadMore={onLoadMore} />}
+        {isImages && <Button text="Load more" onLoadMore={onLoadMore} />}
         {showModal && (
           <Modal close={closeModal}>
             <ImageDetails {...imageDetails} />
