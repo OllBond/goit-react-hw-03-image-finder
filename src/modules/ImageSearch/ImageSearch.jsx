@@ -16,6 +16,7 @@ class ImageSearch extends Component {
     error: null,
     imageDetails: null,
     showModal: false,
+    totalHits: null,
   };
   componentDidUpdate(prevProps, prevState) {
     const { search, page } = this.state;
@@ -30,10 +31,11 @@ class ImageSearch extends Component {
       this.setState({ loading: true });
       const { search, page } = this.state;
       // айякс запит
-      const hits = await searchImage(search, page);
+      const data = await searchImage(search, page);
       //дописуємо новий items - це розпилений старий items і розпилений hits
       // те, що отримали з 2,3 сторінки дописуємо в те, що було
-      this.setState(({ items }) => ({ items: [...items, ...hits] }));
+      this.setState(({ items }) => ({ items: [...items, ...data.hits] }));
+      this.setState({ totalHits: data.totalHits });
     } catch (error) {
       this.setState({ error: error.message });
     } finally {
@@ -63,17 +65,18 @@ class ImageSearch extends Component {
   };
 
   render() {
-    const { items, loading, error, showModal, imageDetails } = this.state;
+    const { items, loading, error, showModal, imageDetails, totalHits } =
+      this.state;
     const { searchImage, onLoadMore, showImage, closeModal } = this;
-    const isImages = Boolean(items.length);
     return (
       <div>
         <Searchbar onSubmit={searchImage} />
         <ImageGallery items={items} showImage={showImage} />
         {error && <p>{error}</p>}
         {loading && <Loader />}
-        {/* якщо є картинки - показуємо кнопку */}
-        {isImages && <Button text="Load more" onLoadMore={onLoadMore} />}
+        {totalHits > items.length && !loading && (
+          <Button onLoadMore={onLoadMore} />
+        )}
         {showModal && (
           <Modal close={closeModal}>
             <ImageDetails {...imageDetails} />
