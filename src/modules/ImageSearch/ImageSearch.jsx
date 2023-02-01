@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { Notify } from 'notiflix';
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
@@ -32,9 +33,11 @@ class ImageSearch extends Component {
       const { search, page } = this.state;
       // айякс запит
       const data = await searchImage(search, page);
-      //дописуємо новий items - це розпилений старий items і розпилений hits
-      // те, що отримали з 2,3 сторінки дописуємо в те, що було
-      this.setState(({ items }) => ({ items: [...items, ...data.hits] }));
+      data.hits.length === 0
+        ? Notify.info('Sorry, nothing found')
+        : //дописуємо новий items - це розпилений старий items і розпилений hits
+          // те, що отримали з 2,3 сторінки дописуємо в те, що було
+          this.setState(({ items }) => ({ items: [...items, ...data.hits] }));
       this.setState({ totalHits: data.totalHits });
     } catch (error) {
       this.setState({ error: error.message });
@@ -71,7 +74,9 @@ class ImageSearch extends Component {
     return (
       <div>
         <Searchbar onSubmit={searchImage} />
-        <ImageGallery items={items} showImage={showImage} />
+        {items.length !== 0 && (
+          <ImageGallery items={items} showImage={showImage} />
+        )}
         {error && <p>{error}</p>}
         {loading && <Loader />}
         {totalHits > items.length && !loading && (
